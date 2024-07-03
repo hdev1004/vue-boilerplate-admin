@@ -1,0 +1,167 @@
+.index {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login_container {
+  position: relative;
+  border-radius: 10px;
+
+  box-shadow: 0px 0px 5px white;
+  width: 600px;
+  height: 500px;
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.6);
+
+  .login_logo {
+    font-family: 'HSSanTokki20-Regular';
+    color: #5c5b5a;
+    text-align: center;
+    font-size: 30px;
+    margin-top: 50px;
+    margin-bottom: 80px;
+  }
+
+  .login_input {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .login_input_group {
+      width: 80%;
+    }
+
+    input {
+      margin-left: auto;
+      margin-right: auto;
+      padding: 10px;
+      outline: none;
+      border: 1px solid lightgray;
+      width: 100%;
+      box-sizing: border-box;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.login_btn {
+  bottom: 10px;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  background-color: #628eff;
+  color: white;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 70px;
+  cursor: pointer;
+}
+
+.canvas-wrapper {
+  width: 100%;
+  height: 100vh;
+  opacity: 0.3;
+  background-color: #628eff;
+  opacity: 1;
+  position: absolute;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.canvas-wrapper .aurora-wrapper {
+  width: 100%;
+  height: 100%;
+  background: rgba(194, 194, 194, 0.131);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.canvas-wrapper .circle {
+  width: 150%;
+  aspect-ratio: 0.8;
+  margin: 0px auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.canvas-wrapper .circle.circle-0 {
+  background: radial-gradient(ellipse, #a6c0fe, transparent, transparent);
+  animation: moveAround0 16s ease-in-out infinite;
+}
+
+.canvas-wrapper .circle.circle-1 {
+  background: radial-gradient(ellipse, #789bf0, transparent, transparent);
+  animation: moveAround1 16s ease-in-out infinite;
+}
+
+.canvas-wrapper .circle.circle-2 {
+  background: radial-gradient(ellipse, #78daf0, transparent, transparent);
+  animation: moveAround2 16s ease-in-out infinite;
+}
+
+.canvas-wrapper .circle.circle-3 {
+  background: radial-gradient(ellipse, #a6aafe, transparent, transparent);
+  animation: moveAround3 16s ease-in-out infinite;
+}
+
+@keyframes moveAround0 {
+  0% {
+    transform: translate(-40%, -30%);
+  }
+  50% {
+    transform: translate(0%, 20%);
+  }
+  100% {
+    transform: translate(-40%, -30%);
+  }
+}
+
+@keyframes moveAround1 {
+  0% {
+    transform: translate(-70%, -70%);
+  }
+  50% {
+    transform: translate(-40%, -40%);
+  }
+  100% {
+    transform: translate(-70%, -70%);
+  }
+}
+
+@keyframes moveAround2 {
+  0% {
+    transform: translate(30%, -80%);
+  }
+  50% {
+    transform: translate(-30%, -50%);
+  }
+  100% {
+    transform: translate(30%, -80%);
+  }
+}
+
+@keyframes moveAround3 {
+  0% {
+    transform: translate(-25%, 0%);
+  }
+  50% {
+    transform: translate(-76%, -45%);
+  }
+  100% {
+    transform: translate(-25%, 0%);
+  }
+}

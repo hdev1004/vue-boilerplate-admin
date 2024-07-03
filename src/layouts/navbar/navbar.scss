@@ -1,0 +1,38 @@
+.navbar_container {
+  width: 232px;
+  height: 100vh;
+  position: fixed;
+  background-color: white;
+}
+
+.navbar_title {
+  text-align: center;
+  font-size: 25px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+  font-family: 'HSSanTokki20-Regular';
+  color: #05153b;
+}
+
+.navbar_menu_list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.navbar_menu {
+  font-weight: 500;
+  cursor: pointer;
+  width: 184px;
+  height: 42px;
+  line-height: 42px;
+  padding-left: 15px;
+  border-radius: 10px;
+  font-size: 13px;
+}
+
+.navbar_menu_active {
+  background-color: #05153b;
+  color: white;
+}

@@ -1,0 +1,60 @@
+.image_container {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  .image_add {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    cursor: pointer;
+    background-color: white;
+    box-shadow: 0px 0px 5px lightgray;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.upload_container {
+  padding-left: 100px;
+  width: calc(100% - 232px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.title_container {
+  .title_logo {
+    font-family: 'HSSanTokki20-Regular';
+    font-size: 25px;
+    font-weight: 100;
+    color: #05153b;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+}
+
+.item_title_container {
+  width: calc(100% - 120px - 140px - 10%);
+  box-sizing: border-box;
+  .item_row {
+    display: flex;
+  }
+
+  input {
+    width: 100%;
+  }
+}
+
+.editor_container {
+  width: 80%;
+
+  div {
+    background-color: white;
+  }
+}
