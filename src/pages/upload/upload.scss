@@ -4,6 +4,8 @@
   margin-bottom: 20px;
 
   .image_add {
+    min-width: 140px;
+    min-height: 140px;
     width: 140px;
     height: 140px;
     display: flex;
@@ -12,11 +14,18 @@
     border-radius: 7px;
     cursor: pointer;
     background-color: white;
+    overflow: hidden;
     box-shadow: 0px 0px 5px lightgray;
 
     img {
       width: 30px;
       height: 30px;
+    }
+
+    .previewImage {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
     }
   }
 }
@@ -40,9 +49,32 @@
 }
 
 .item_title_container {
-  width: calc(100% - 120px - 140px - 10%);
+  margin-left: 100px;
   box-sizing: border-box;
+  width: calc(100% - 100px - 100px - 140px - 20px);
+
   .item_row {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    margin-bottom: 15px;
+    div {
+      min-width: 100px;
+      font-weight: 500;
+      width: 100px;
+    }
+
+    input {
+      font-size: 18px;
+      transition: 0.3s;
+      padding-left: 15px;
+      outline: none;
+      border: 1px solid lightgray;
+    }
+
+    input:focus {
+      border: 1px solid black;
+    }
     display: flex;
   }
 
@@ -52,9 +84,27 @@
 }
 
 .editor_container {
-  width: 80%;
+  width: calc(100% - 100px);
+  font-size: 20px;
 
   div {
     background-color: white;
   }
+}
+
+.save_btn {
+  margin-top: 30px;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  background-color: #05153b;
+  color: white;
+  transition: 0.3s;
+  cursor: pointer;
+  margin-bottom: 30px !important;
+}
+
+.save_btn:hover {
+  box-shadow: 0px 0px 5px lightgray;
 }

@@ -11,6 +11,27 @@ const itemStyles = ref('')
 const itemPrice = ref(0)
 const quantity = ref(0)
 const itemList = ref([])
+const fileUpload = ref()
+const previewImage = ref(null)
+
+const thumbnailUpload = (event: any) => {
+  const files = event.target?.files
+  if (files.length > 0) {
+    const file = files[0]
+
+    // FileReader 객체 : 웹 애플리케이션이 데이터를 읽고, 저장하게 해줌
+    const reader = new FileReader()
+
+    // load 이벤트 핸들러. 리소스 로딩이 완료되면 실행됨.
+    reader.onload = (e: any) => {
+      previewImage.value = e.target.result
+    } // ref previewImage 값 변경
+
+    // 컨텐츠를 특정 file에서 읽어옴. 읽는 행위가 종료되면 loadend 이벤트 트리거함
+    // & base64 인코딩된 스트링 데이터가 result 속성에 담김
+    reader.readAsDataURL(file)
+  }
+}
 
 const upload = async () => {
   let data = null
@@ -61,14 +82,23 @@ onMounted(() => {
       <div class="title_logo">제품 등록</div>
     </section>
     <section class="image_container">
-      <div class="image_add">
-        <img src="@/assets/images/addImage.png" />
+      <div class="image_add" @click="fileUpload.click()">
+        <input
+          @change="thumbnailUpload"
+          ref="fileUpload"
+          type="file"
+          id="upload-image"
+          accept="image/gif, image/jpeg, image/png, image/jpg"
+          hidden
+        />
+        <img v-if="!previewImage" src="@/assets/images/addImage.png" />
+        <img class="previewImage" v-else :src="previewImage" />
       </div>
 
       <div class="item_title_container">
         <div class="item_row">
           <div>제품 이름</div>
-          <input type="text" />
+          <input v-model="itemName" type="text" />
         </div>
 
         <div class="item_row">
@@ -81,6 +111,9 @@ onMounted(() => {
     <section class="editor_container">
       <div ref="editor" />
     </section>
+
+    <section class="save_btn">등록</section>
+    <div style="height: 40px; width: 500px">&nbsp;</div>
   </section>
 </template>
 
