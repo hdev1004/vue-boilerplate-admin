@@ -14,6 +14,29 @@ const itemList = ref([])
 const fileUpload = ref()
 const previewImage = ref(null)
 
+const hashTagInput = ref('')
+const prevTagTrigger = ref(false)
+const hashTag = ref([])
+
+const inputEnter = (event: any) => {
+  if (event.key === 'Enter') {
+    if (hashTagInput.value.trim() === '') return
+    //추가 매커니즘
+    hashTag.value.push(hashTagInput.value)
+    hashTagInput.value = ''
+  } else if (event.key === 'Backspace') {
+    if (hashTagInput.value === '' && prevTagTrigger.value) {
+      //삭제 매커니즘
+      hashTag.value.pop()
+    }
+    if (hashTagInput.value === '') {
+      prevTagTrigger.value = true
+    }
+  } else {
+    prevTagTrigger.value = false
+  }
+}
+
 const thumbnailUpload = (event: any) => {
   const files = event.target?.files
   if (files.length > 0) {
@@ -110,6 +133,35 @@ onMounted(() => {
 
     <section class="editor_container">
       <div ref="editor" />
+    </section>
+
+    <section class="item_footer_container">
+      <div class="item_row">
+        <div class="item_row_title">스타일 해시 태그 (#)</div>
+        <div class="hashtag">
+          <div class="tag_container" v-if="hashTag.length">
+            <div class="tag" v-for="(tag, index) in hashTag" v-bind:key="tag">
+              {{ tag }}
+              <img src="@/assets/images/close.png" @click="hashTag.splice(index, 1)" />
+            </div>
+          </div>
+          <input
+            placeholder="텍스트 입력 후 엔터를 입력해주세요"
+            @keyup="inputEnter"
+            v-model="hashTagInput"
+          />
+        </div>
+      </div>
+      <div class="item_sub_container">
+        <div class="item_sub_row">
+          <div>가격</div>
+          <input type="number" />
+        </div>
+        <div class="item_sub_row">
+          <div>수량</div>
+          <input type="number" />
+        </div>
+      </div>
     </section>
 
     <section class="save_btn">등록</section>

@@ -31,6 +31,7 @@
 }
 
 .upload_container {
+  min-width: 750px;
   padding-left: 100px;
   width: calc(100% - 232px);
   height: 100vh;
@@ -107,4 +108,109 @@
 
 .save_btn:hover {
   box-shadow: 0px 0px 5px lightgray;
+}
+
+.item_footer_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .item_sub_container {
+    display: flex;
+    width: calc(100% - 100px);
+
+    .item_sub_row {
+      display: flex;
+      min-height: 45px;
+      width: 100%;
+      height: 45px;
+      line-height: 45px;
+
+      div {
+        text-align: center;
+        width: 180px;
+        min-width: 180px;
+        font-size: 14px;
+      }
+
+      input {
+        padding-left: 15px;
+        outline: none;
+        border: 1px solid lightgray;
+        width: 100%;
+      }
+    }
+  }
+
+  .item_row {
+    position: relative;
+    width: calc(100% - 100px);
+    display: flex;
+
+    margin-bottom: 15px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+
+    .hashtag {
+      display: flex;
+      background-color: white;
+      width: 100%;
+      border: 1px solid lightgray;
+      position: relative;
+
+      input {
+        min-height: 45px;
+        flex: 1;
+        padding-left: 15px;
+        border: 0px;
+        box-sizing: border-box;
+        outline: none;
+      }
+    }
+
+    .item_row_title {
+      font-size: 14px;
+      text-align: center;
+      min-width: 180px;
+      width: 180px;
+    }
+  }
+}
+.tag_container {
+  max-width: 250px;
+  font-size: 13px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+  flex-wrap: wrap;
+  margin-right: 10px;
+
+  .tag {
+    background-color: rgb(234, 234, 234);
+    color: #05153b;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    transition: 0.3s;
+    padding-left: 5px;
+    padding-right: 5px;
+
+    img {
+      cursor: pointer;
+      margin-left: 5px;
+      width: 15px;
+      height: 15px;
+    }
+  }
+
+  .tag:hover {
+    background-color: lightgray;
+  }
 }

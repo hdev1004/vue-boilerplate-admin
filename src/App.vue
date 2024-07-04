@@ -17,6 +17,7 @@
 }
 .blank {
   width: 232px;
+  min-width: 232px;
   height: 100vh;
 }
 </style>
