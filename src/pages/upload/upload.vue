@@ -16,12 +16,13 @@ const previewImage = ref(null)
 
 const hashTagInput = ref('')
 const prevTagTrigger = ref(false)
-const hashTag = ref([])
+const hashTag = ref<Array<String>>([])
 
 const inputEnter = (event: any) => {
   if (event.key === 'Enter') {
     if (hashTagInput.value.trim() === '') return
     //추가 매커니즘
+    if (hashTagInput.value === null) return
     hashTag.value.push(hashTagInput.value)
     hashTagInput.value = ''
   } else if (event.key === 'Backspace') {
@@ -87,7 +88,7 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue'])
 const editor = ref()
 onMounted(() => {
-  const e = new Editor({
+  const e: any = new Editor({
     el: editor.value,
     height: '500px',
     initialEditType: 'wysiwyg',
@@ -140,7 +141,7 @@ onMounted(() => {
         <div class="item_row_title">스타일 해시 태그 (#)</div>
         <div class="hashtag">
           <div class="tag_container" v-if="hashTag.length">
-            <div class="tag" v-for="(tag, index) in hashTag" v-bind:key="tag">
+            <div class="tag" v-for="(tag, index) in hashTag" v-bind:key="`tag${index}`">
               {{ tag }}
               <img src="@/assets/images/close.png" @click="hashTag.splice(index, 1)" />
             </div>

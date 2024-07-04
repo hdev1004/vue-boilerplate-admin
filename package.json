@@ -26,6 +26,7 @@
   "devDependencies": {
     "@playwright/test": "^1.44.0",
     "@rushstack/eslint-patch": "^1.2.0",
+    "@toast-ui/editor": "^3.2.2",
     "@tsconfig/node18": "^2.0.1",
     "@types/jsdom": "^21.1.1",
     "@types/node": "^18.16.8",

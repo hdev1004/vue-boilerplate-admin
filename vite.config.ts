@@ -8,6 +8,11 @@ import Components from 'unplugin-vue-components/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      external: ['@toast-ui/editor', '@toast-ui/editor/dist/toastui-editor.css']
+    }
+  },
   plugins: [
     vue(),
     AutoImport({
