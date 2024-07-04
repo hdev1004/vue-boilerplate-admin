@@ -8,6 +8,8 @@ const menuClick = (title: string) => {
   menu.value = title
   if (title === '제품등록') {
     router.push('/upload')
+  } else if (title === '제품목록') {
+    router.push('/itemlist')
   } else if (title === '배너관리') {
     router.push('/banner')
   } else if (title === '사용자관리') {
@@ -32,6 +34,12 @@ const homeClick = () => {
         @click="menuClick('제품등록')"
       >
         제품 등록
+      </div>
+      <div
+        :class="`navbar_menu ${menu === '제품목록' ? 'navbar_menu_active' : ''}`"
+        @click="menuClick('제품목록')"
+      >
+        제품 목록
       </div>
       <div
         :class="`navbar_menu ${menu === '배너관리' ? 'navbar_menu_active' : ''}`"

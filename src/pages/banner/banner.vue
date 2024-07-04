@@ -8,6 +8,9 @@ const image5 = ref(null)
 
 <template>
   <section class="banner_container">
+    <section class="title_container">
+      <div class="title_logo">배너 관리</div>
+    </section>
     <div class="image_container">
       <div>
         <img class="add_image" v-if="!image1" src="@/assets/images/addImage.png" />
