@@ -8,13 +8,24 @@ const menuClick = (title: string) => {
   menu.value = title
   if (title === '제품등록') {
     router.push('/upload')
+  } else if (title === '배너관리') {
+    router.push('/banner')
+  } else if (title === '사용자관리') {
+    router.push('/user')
+  } else if (title === '쿠폰관리') {
+    router.push('coupon')
   }
+}
+
+const homeClick = () => {
+  router.push('/')
+  menu.value = 'home'
 }
 </script>
 
 <template>
   <section class="navbar_container">
-    <div class="navbar_title">글루따띠온</div>
+    <div class="navbar_title" @click="homeClick">글루따띠온</div>
     <div class="navbar_menu_list">
       <div
         :class="`navbar_menu ${menu === '제품등록' ? 'navbar_menu_active' : ''}`"

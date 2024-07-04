@@ -4,14 +4,20 @@ export default [
     name: 'index',
     component: () => import('@/pages/index.vue')
   },
+
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/pages/login/login.vue')
+  },
   {
     path: '/upload',
     name: 'upload',
     component: () => import('@/pages/upload/upload.vue')
   },
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/pages/login/login.vue')
+    path: '/banner',
+    name: 'banner',
+    component: () => import('@/pages/banner/banner.vue')
   }
 ]

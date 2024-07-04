@@ -4,10 +4,10 @@
   margin-bottom: 20px;
 
   .image_add {
-    min-width: 140px;
-    min-height: 140px;
-    width: 140px;
-    height: 140px;
+    min-width: 160px;
+    min-height: 160px;
+    width: 160px;
+    height: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -50,7 +50,7 @@
 }
 
 .item_title_container {
-  margin-left: 100px;
+  margin-left: 80px;
   box-sizing: border-box;
   width: calc(100% - 100px - 100px - 140px - 20px);
 

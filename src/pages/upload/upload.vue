@@ -3,6 +3,7 @@ import AxiosInstance from '@/axios/axiosInstance'
 import { error, success } from '@/utils/vueAlert'
 import Editor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
+const options = [...Array(25)].map((_, i) => ({ value: (i + 10).toString(36) + (i + 1) }))
 
 const itemName = ref('')
 const itemDescription = ref('')
@@ -10,7 +11,7 @@ const itemTypeId = ref('')
 const itemStyles = ref('')
 const itemPrice = ref(0)
 const quantity = ref(0)
-const itemList = ref([])
+const itemCategory = ref('')
 const fileUpload = ref()
 const previewImage = ref(null)
 
@@ -128,6 +129,16 @@ onMounted(() => {
         <div class="item_row">
           <div>제품 설명</div>
           <input type="text" />
+        </div>
+
+        <div class="item_row">
+          <div>제품 카테고리</div>
+          <a-select
+            v-model:value="itemCategory"
+            size="large"
+            style="width: 200px"
+            :options="options"
+          ></a-select>
         </div>
       </div>
     </section>
