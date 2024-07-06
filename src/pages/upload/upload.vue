@@ -1,23 +1,41 @@
 <script setup lang="ts">
 import AxiosInstance from '@/axios/axiosInstance'
-import { error, success } from '@/utils/vueAlert'
+import { error, success, warning } from '@/utils/vueAlert'
 import Editor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
-const options = [...Array(25)].map((_, i) => ({ value: (i + 10).toString(36) + (i + 1) }))
+const options = ref<Array<Object>>([])
 
 const itemName = ref('')
+const itemContents = ref('')
 const itemDescription = ref('')
-const itemTypeId = ref('')
-const itemStyles = ref('')
 const itemPrice = ref(0)
 const quantity = ref(0)
 const itemCategory = ref('')
 const fileUpload = ref()
 const previewImage = ref(null)
+const thumbnail = ref(null)
 
 const hashTagInput = ref('')
 const prevTagTrigger = ref(false)
 const hashTag = ref<Array<String>>([])
+
+const getCategory = async () => {
+  let data = null
+
+  try {
+    data = await AxiosInstance.get('/api/product-service/products/types')
+    data.data.types.map((item: { productTypeId: number; type: string }) => {
+      console.log('ITEM : ', item)
+      options.value.push({
+        value: item.productTypeId,
+        label: item.type
+      })
+    })
+  } catch (err: any) {
+    console.log(err)
+    error('등록 중 오류가 발생했습니다.')
+  }
+}
 
 const inputEnter = (event: any) => {
   if (event.key === 'Enter') {
@@ -39,39 +57,92 @@ const inputEnter = (event: any) => {
   }
 }
 
-const thumbnailUpload = (event: any) => {
+const thumbnailUpload = async (event: any) => {
   const files = event.target?.files
+  let formData = new FormData()
+  let axiosConfig = {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
   if (files.length > 0) {
-    const file = files[0]
+    try {
+      const file = files[0]
 
-    // FileReader 객체 : 웹 애플리케이션이 데이터를 읽고, 저장하게 해줌
-    const reader = new FileReader()
+      const newFile = new File([file], `thumbnail_${file.name}`, {
+        type: file.type
+      })
+      formData.append('multipartFile', newFile)
+      let data = await AxiosInstance.post(
+        '/api/product-service/products/images',
+        formData,
+        axiosConfig
+      )
+      thumbnail.value = data.data.imageId
 
-    // load 이벤트 핸들러. 리소스 로딩이 완료되면 실행됨.
-    reader.onload = (e: any) => {
-      previewImage.value = e.target.result
-    } // ref previewImage 값 변경
+      // FileReader 객체 : 웹 애플리케이션이 데이터를 읽고, 저장하게 해줌
+      const reader = new FileReader()
 
-    // 컨텐츠를 특정 file에서 읽어옴. 읽는 행위가 종료되면 loadend 이벤트 트리거함
-    // & base64 인코딩된 스트링 데이터가 result 속성에 담김
-    reader.readAsDataURL(file)
+      // load 이벤트 핸들러. 리소스 로딩이 완료되면 실행됨.
+      reader.onload = (e: any) => {
+        previewImage.value = e.target.result
+      } // ref previewImage 값 변경
+
+      // 컨텐츠를 특정 file에서 읽어옴. 읽는 행위가 종료되면 loadend 이벤트 트리거함
+      // & base64 인코딩된 스트링 데이터가 result 속성에 담김
+      reader.readAsDataURL(file)
+    } catch (err: any) {
+      error('이미지 업로드 오류')
+      console.log('ERR : ', err)
+    }
   }
 }
 
+const findUseImageArray = () => {
+  let html = itemContents.value
+
+  const parser = new DOMParser()
+  const doc = parser.parseFromString(html, 'text/html')
+  const images = doc.querySelectorAll('img')
+  return Array.from(images).map((img) =>
+    parseInt(img.src.split('/')[img.src.split('/').length - 1])
+  )
+}
+
 const upload = async () => {
-  let data = null
+  console.log('Contetns : ', itemContents.value)
+
   try {
-    data = await AxiosInstance.post('/api/product-service/products', {
+    let data = null
+    let param = {
       name: itemName.value,
       description: itemDescription.value,
-      productTypeId: itemTypeId.value,
-      productStyles: itemStyles.value.split(','),
+      content: itemContents.value,
+      productTypeId: itemCategory.value,
+      productStyles: hashTag.value,
       unitPrice: itemPrice.value,
-      quantity: quantity.value
-    })
+      quantity: quantity.value,
+      contentImageIds: findUseImageArray(),
+      thumbnailImageId: thumbnail.value
+    }
 
-    let detail = await AxiosInstance.get(`/api/product-service/products/${data.data.productId}`)
+    console.log('PARAM : ', param)
+    if (!confirm('제품을 등록하시겠습니까?')) {
+      return
+    }
 
+    data = await AxiosInstance.post('/api/product-service/products', param)
+
+    itemName.value = ''
+    itemDescription.value = ''
+    itemContents.value = ''
+    itemCategory.value = ''
+    itemPrice.value = 0
+    quantity.value = 0
+    e.setHTML('')
+    hashTag.value = []
+    thumbnail.value = null
+    previewImage.value = null
     success('등록이 완료되었습니다.')
   } catch (err) {
     console.log(err)
@@ -88,14 +159,50 @@ const props = defineProps({
 })
 const emit = defineEmits(['update:modelValue'])
 const editor = ref()
+let e: any = null
+
 onMounted(() => {
-  const e: any = new Editor({
+  getCategory()
+  e = new Editor({
     el: editor.value,
     height: '500px',
     initialEditType: 'wysiwyg',
     previewStyle: 'vertical',
+    hooks: {
+      async addImageBlobHook(blob, callback) {
+        let formData = new FormData()
+
+        let axiosConfig = {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+        try {
+          let randomUUID = crypto.randomUUID()
+          const newFile = new File([blob], `content_${blob.name}`, {
+            type: blob.type
+          })
+          formData.append('multipartFile', newFile)
+          let data = await AxiosInstance.post(
+            '/api/product-service/products/images',
+            formData,
+            axiosConfig
+          )
+          callback(
+            `http://211.218.223.120:30002/product-service/products/images/${data.data.imageId}`
+          )
+          //callback()
+        } catch (err) {
+          error('이미지 업로드 오류')
+          console.log('ERR : ', err)
+        }
+      }
+    },
     events: {
-      change: () => emit('update:modelValue', e.getMarkdown())
+      change: () => {
+        emit('update:modelValue', e.getMarkdown())
+        itemContents.value = e.getHTML()
+      }
     }
   })
 })
@@ -128,7 +235,7 @@ onMounted(() => {
 
         <div class="item_row">
           <div>제품 설명</div>
-          <input type="text" />
+          <input v-model="itemDescription" type="text" />
         </div>
 
         <div class="item_row">
@@ -167,16 +274,16 @@ onMounted(() => {
       <div class="item_sub_container">
         <div class="item_sub_row">
           <div>가격</div>
-          <input type="number" />
+          <input type="number" v-model="itemPrice" />
         </div>
         <div class="item_sub_row">
           <div>수량</div>
-          <input type="number" />
+          <input type="number" v-model="quantity" />
         </div>
       </div>
     </section>
 
-    <section class="save_btn">등록</section>
+    <section class="save_btn" @click="upload()">등록</section>
     <div style="height: 40px; width: 500px">&nbsp;</div>
   </section>
 </template>

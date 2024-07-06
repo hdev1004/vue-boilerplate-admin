@@ -9,7 +9,13 @@ const AxiosInstance = axios.create({
 //요청 인터셉터
 AxiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('memberToken')
+    const excludeURL = ['/api/user-service/admin/login']
+    const url = config.url ? config.url : ''
+    if (excludeURL.includes(url)) {
+      return config
+    }
+    const memberTokenString = localStorage.getItem('memberToken')
+    const token = memberTokenString ? JSON.parse(memberTokenString).memberToken : {}
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }

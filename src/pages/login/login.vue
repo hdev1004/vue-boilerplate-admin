@@ -15,6 +15,7 @@ const keyPress = (e: any) => {
 
 const login = async () => {
   let data = null
+  let now = new Date()
 
   try {
     data = await AxiosInstance.post('/api/user-service/admin/login', {
@@ -22,7 +23,13 @@ const login = async () => {
       password: pw.value
     })
     console.log(data.headers.token)
-    window.localStorage.setItem('memberToken', data.headers.token)
+    window.localStorage.setItem(
+      'memberToken',
+      JSON.stringify({
+        memberToken: data.headers.token,
+        expires: now.getTime() + 24 * 60 * 1000 * 1000
+      })
+    )
     router.push('/')
     success('글루따띠온에 오신것을 환영합니다.')
   } catch (err: any) {

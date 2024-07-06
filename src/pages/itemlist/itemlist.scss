@@ -10,5 +10,86 @@
 }
 
 .itemlist_container {
+  position: relative;
+  width: 100%;
   margin-left: 100px;
+  margin-right: 100px;
+  min-width: 1200px;
+}
+
+.item_list_header {
+  display: flex;
+  width: 100%;
+  text-align: left;
+  div {
+    flex: 3;
+    height: 45px;
+    line-height: 45px;
+    font-weight: bold;
+    font-size: 18px;
+    border-bottom: 1px solid lightgray;
+  }
+}
+
+.item_list_row {
+  display: flex;
+  border-bottom: 1px solid lightgray;
+  width: 100%;
+  text-align: left;
+  div {
+    flex: 3;
+    height: 100px;
+    background-color: white;
+    line-height: 100px;
+  }
+}
+.check {
+  text-align: center;
+  flex: 1 !important;
+}
+.upload {
+  text-align: center;
+  flex: 2 !important;
+}
+.image {
+  text-align: center;
+  flex: 2 !important;
+}
+.update {
+  img {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+  }
+  text-align: center;
+  flex: 1 !important;
+}
+.delete {
+  img {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+  }
+  text-align: center;
+  flex: 1 !important;
+}
+
+.search {
+  position: absolute;
+  right: 0px;
+
+  top: 70px;
+  input {
+    width: 250px;
+    box-sizing: border-box;
+    height: 45px;
+    border: 1px solid lightgray;
+    outline: none;
+    padding-left: 15px;
+    transition: 0.3s;
+  }
+
+  input:focus {
+    border: 1px solid black;
+  }
 }
