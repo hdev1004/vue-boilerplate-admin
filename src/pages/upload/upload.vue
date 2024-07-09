@@ -188,9 +188,7 @@ onMounted(() => {
             formData,
             axiosConfig
           )
-          callback(
-            `http://211.218.223.120:30002/product-service/products/images/${data.data.imageId}`
-          )
+          callback(`/api/product-service/products/images/${data.data.imageId}`)
           //callback()
         } catch (err) {
           error('이미지 업로드 오류')
