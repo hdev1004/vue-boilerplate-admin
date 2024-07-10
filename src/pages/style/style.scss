@@ -1,0 +1,85 @@
+.title_container {
+  .title_logo {
+    font-family: 'HSSanTokki20-Regular';
+    font-size: 25px;
+    font-weight: 100;
+    color: #05153b;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+}
+
+.style_container {
+  min-width: 750px;
+  padding-left: 100px;
+  width: calc(100% - 232px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.style_input {
+  margin-bottom: 50px;
+  input {
+    transition: 0.3s;
+    height: 45px;
+    padding-left: 15px;
+    outline: none;
+    border: 1px solid lightgray;
+    margin-bottom: 10px;
+    width: calc(100% - 170px);
+  }
+
+  input:focus {
+    border: 1px solid #05153b;
+  }
+}
+
+.list_row {
+  position: relative;
+  display: flex;
+
+  input {
+    transition: 0.3s;
+    height: 45px;
+    padding-left: 15px;
+    outline: none;
+    border: 1px solid lightgray;
+    margin-bottom: 10px;
+    width: calc(100% - 170px);
+  }
+  input:focus {
+    border: 1px solid #05153b;
+  }
+}
+
+.save_btn {
+  background-color: #05153b;
+  color: white;
+  width: 200px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  margin-top: 50px;
+  cursor: pointer;
+}
+
+.item_close {
+  cursor: pointer;
+  position: absolute;
+  padding: 5px;
+  background-color: #f16f6f;
+  color: white;
+  width: 49px;
+  height: 49px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 103px;
+
+  img {
+    width: 15px;
+    height: 15px;
+  }
+}

@@ -3,6 +3,10 @@ import AxiosInstance from '@/axios/axiosInstance'
 import { error, success, warning } from '@/utils/vueAlert'
 import Editor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
+
+const route = useRoute()
+console.log(route.query)
+
 const options = ref<Array<Object>>([])
 
 const itemName = ref('')

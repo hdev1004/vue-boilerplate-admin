@@ -12,6 +12,8 @@ const menuClick = (title: string) => {
     router.push('/itemlist')
   } else if (title === '배너관리') {
     router.push('/banner')
+  } else if (title === '스타일관리') {
+    router.push('/style')
   } else if (title === '사용자관리') {
     router.push('/user')
   } else if (title === '쿠폰관리') {
@@ -46,6 +48,12 @@ const homeClick = () => {
         @click="menuClick('배너관리')"
       >
         배너 관리
+      </div>
+      <div
+        :class="`navbar_menu ${menu === '스타일관리' ? 'navbar_menu_active' : ''}`"
+        @click="menuClick('스타일관리')"
+      >
+        스타일 관리
       </div>
       <div
         :class="`navbar_menu ${menu === '사용자관리' ? 'navbar_menu_active' : ''}`"

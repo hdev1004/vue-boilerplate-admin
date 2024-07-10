@@ -5,7 +5,7 @@ import { error, warning } from './utils/vueAlert'
 
 const route = useRoute()
 const router = useRouter()
-const isNavShow = ref(false)
+const isNavShow = ref(true)
 
 const handleRouteChange = (newRoute: any) => {
   let now = new Date()

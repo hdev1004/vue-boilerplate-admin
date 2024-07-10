@@ -16,6 +16,11 @@ export default [
     component: () => import('@/pages/upload/upload.vue')
   },
   {
+    path: '/style',
+    name: 'style',
+    component: () => import('@/pages/style/style.vue')
+  },
+  {
     path: '/itemlist',
     name: 'itemlist',
     component: () => import('@/pages/itemlist/itemlist.vue')
