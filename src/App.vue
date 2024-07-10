@@ -13,10 +13,8 @@ const handleRouteChange = (newRoute: any) => {
     isNavShow.value = false
   } else {
     // 다른 경로에 대한 작업 수행
-
     let memberTokenString = localStorage.getItem('memberToken')
     let memberToken = memberTokenString ? JSON.parse(memberTokenString) : undefined
-
     if (!memberToken) {
       warning('로그인을 진행해주세요.')
       router.push('/login')
@@ -32,6 +30,7 @@ const handleRouteChange = (newRoute: any) => {
 watch(
   () => route.path,
   (newPath) => {
+    console.log('newPath : ', newPath)
     handleRouteChange(route)
   }
 )
