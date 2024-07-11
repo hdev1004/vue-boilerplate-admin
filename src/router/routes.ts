@@ -21,6 +21,11 @@ export default [
     component: () => import('@/pages/style/style.vue')
   },
   {
+    path: '/inquiry',
+    name: 'inquiry',
+    component: () => import('@/pages/inquiry/inquiry.vue')
+  },
+  {
     path: '/itemlist',
     name: 'itemlist',
     component: () => import('@/pages/itemlist/itemlist.vue')

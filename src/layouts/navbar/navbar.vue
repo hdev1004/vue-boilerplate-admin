@@ -17,7 +17,9 @@ const menuClick = (title: string) => {
   } else if (title === '사용자관리') {
     router.push('/user')
   } else if (title === '쿠폰관리') {
-    router.push('coupon')
+    router.push('/coupon')
+  } else if (title === '문의관리') {
+    router.push('/inquiry')
   }
 }
 
@@ -53,7 +55,13 @@ const homeClick = () => {
         :class="`navbar_menu ${menu === '스타일관리' ? 'navbar_menu_active' : ''}`"
         @click="menuClick('스타일관리')"
       >
-        스타일 관리
+        카테고리 관리
+      </div>
+      <div
+        :class="`navbar_menu ${menu === '문의관리' ? 'navbar_menu_active' : ''}`"
+        @click="menuClick('문의관리')"
+      >
+        문의 관리
       </div>
       <div
         :class="`navbar_menu ${menu === '사용자관리' ? 'navbar_menu_active' : ''}`"

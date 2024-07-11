@@ -40,12 +40,12 @@ getStyleList()
 <template>
   <section class="style_container">
     <section class="title_container">
-      <div class="title_logo">스타일 관리</div>
+      <div class="title_logo">카테고리 관리</div>
     </section>
 
     <section class="style_input">
       <input
-        placeholder="저장할 스타일을 입력하세요 (Enter)"
+        placeholder="저장할 카테고리를 입력하세요 (Enter)"
         @keypress="addStyle"
         v-model="addInput"
       />

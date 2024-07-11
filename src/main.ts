@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createHead } from '@unhead/vue'
 import Antd from 'ant-design-vue'
+import { VueSpinners } from '@saeris/vue-spinners'
 
 import App from '@/App.vue'
 import router from '@/router/index'
@@ -12,6 +13,7 @@ const app = createApp(App)
 /** https://pinia.vuejs.org/ **/
 const pinia = createPinia()
 app.use(pinia)
+app.use(VueSpinners)
 app.use(Antd)
 
 /** Vue Router **/

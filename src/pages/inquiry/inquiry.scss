@@ -1,0 +1,80 @@
+.title_container {
+  .title_logo {
+    font-family: 'HSSanTokki20-Regular';
+    font-size: 25px;
+    font-weight: 100;
+    color: #05153b;
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+}
+
+.inquiry_container {
+  min-width: 1400px;
+  display: flex;
+  width: 100%;
+  height: 100vh;
+
+  & > div {
+    border-right: 1px solid rgb(224, 224, 224);
+    flex: 1;
+    margin-left: 100px;
+  }
+}
+
+.item_list {
+  width: 95%;
+}
+.item_list_header {
+  color: #05153b;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px;
+  display: flex;
+
+  div:nth-child(1) {
+    text-align: center;
+    flex: 1;
+  }
+  div:nth-child(2) {
+    flex: 2;
+  }
+  div:nth-child(3) {
+    flex: 3;
+  }
+}
+
+.item_list_contents {
+  transition: 0.3s;
+  cursor: pointer;
+  height: 100px;
+  border-bottom: 1px solid lightgray;
+  padding: 10px;
+  display: flex;
+
+  div:nth-child(1) {
+    text-align: center;
+    flex: 1;
+  }
+  div:nth-child(2) {
+    display: flex;
+    align-items: center;
+    flex: 2;
+  }
+  div:nth-child(3) {
+    text-align: left;
+    display: flex;
+    align-items: center;
+    flex: 3;
+  }
+}
+
+.item_list_contents_active {
+  background-color: #e2e2e283;
+}
+
+.image {
+  img {
+    height: 100%;
+  }
+}
