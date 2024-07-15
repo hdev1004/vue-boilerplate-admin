@@ -17,6 +17,7 @@ const search = async (e: any) => {
       res = await AxiosInstance.get(
         `/api/product-service/products/search?page=1&size=10&keyword=${searchInput.value}`
       )
+      if (res === null) return
       data.value = res.data.contents
       success('검색이 완료되었습니다.')
     } catch (err: any) {
@@ -63,6 +64,7 @@ const getItemList = async () => {
   let res = null
   try {
     res = await AxiosInstance.get('/api/product-service/products/search?page=1&size=10')
+    if (res === null) return
     data.value = res.data.contents
     console.log(data.value)
   } catch (err: any) {

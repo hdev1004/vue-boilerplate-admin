@@ -1,25 +1,48 @@
 <script setup lang="ts">
 import AxiosInstance from '@/axios/axiosInstance'
-import { error } from '@/utils/vueAlert'
+import { error, success } from '@/utils/vueAlert'
 const data = ref<Array<any>>([])
 const clickItemIndex = ref(-1)
-const cilckItem = ref({})
-const inquryList = ref([])
+const cilckItem = ref<any>({})
+const inquryList = ref<Array<any>>([])
+const loading = ref(false)
+const leftLoading = ref(false)
 
 const itemClick = (item: object, index: number) => {
   clickItemIndex.value = index
   cilckItem.value = item
+  console.log(cilckItem.value)
 
   getInquiryList()
 }
 
+const answerClick = async (index: number, itemId: number) => {
+  let data = <HTMLInputElement>document.querySelector('#answer' + index)
+  console.log('ITEM ID : ', itemId)
+  try {
+    let res = await AxiosInstance.post(`/api/product-service/products/inquires/${itemId}/answers`, {
+      content: data
+    })
+    if (res === null) return
+
+    success('문의 답변이 등록되었습니다.')
+  } catch (err: any) {
+    error('답변 등록중 오류가 발생했습니다')
+    console.log(err)
+  }
+}
+
 const getInquiryList = async () => {
   let res = null
-  console.log(clickItemIndex.value)
+  loading.value = true
   try {
-    res = await AxiosInstance.get(`/api/product-service/products/${clickItemIndex.value}/inquires`)
+    res = await AxiosInstance.get(
+      `/api/product-service/products/${cilckItem.value.productId}/inquires`
+    )
+    if (res === null) return
     inquryList.value = res.data.inquires
-    console.log('Inquiry : ', inquryList.value)
+    loading.value = false
+    console.log('DATA : ', inquryList.value)
   } catch (err: any) {
     error('오류가 발생했습니다.')
     console.log(err)
@@ -30,6 +53,7 @@ const getItemList = async () => {
   let res = null
   try {
     res = await AxiosInstance.get('/api/product-service/products/search?page=1&size=10')
+    if (res === null) return
     data.value = res.data.contents
     console.log(data.value)
   } catch (err: any) {
@@ -71,23 +95,27 @@ getItemList()
         </div>
       </div>
     </div>
-    <div>
+    <div class="inquiry_list">
       <section class="title_container">
         <div class="title_logo">문의 목록</div>
       </section>
 
       <div class="inquiry_table">
-        <div class="inquiry_row">
-          <a-spin tip="데이터를 불러오고 있습니다">
-            <div>문의 내용입니다</div>
-            <div>답변 작성 중 입니다</div>
-          </a-spin>
-
-          <div v-for="(inquryItem, index) in inquryList" v-bind:key="`inquriyItem${index}`">
-            <div>문의 내용입니다</div>
-            <div>답변 작성 중 입니다</div>
+        <a-spin :spinning="loading" tip="데이터를 불러오고 있습니다">
+          <div class="inquiry_row" v-for="(item, index) in inquryList" v-bind:key="`item${index}`">
+            <div class="inquiry_nickname"><b>tester</b>님의 문의</div>
+            <div class="inquiry_q">{{ item.content }}</div>
+            <textarea
+              :id="`answer${index}`"
+              class="inquiry_a"
+              placeholder="답변을 작성해주세요"
+              spellcheck="false"
+            ></textarea>
+            <div class="inquiry_btn" @click="answerClick(index, item.productInquireId)">
+              답변 달기
+            </div>
           </div>
-        </div>
+        </a-spin>
       </div>
     </div>
   </section>

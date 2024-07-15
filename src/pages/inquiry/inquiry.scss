@@ -78,3 +78,54 @@
     height: 100%;
   }
 }
+
+.inquiry_list {
+  height: 100vh;
+  overflow: auto;
+}
+
+.inquiry_nickname {
+  font-size: 17px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.inquiry_table {
+  height: 100vh;
+}
+
+.inquiry_row {
+  margin-bottom: 50px;
+}
+
+.inquiry_q {
+  width: 80%;
+  padding: 20px;
+  height: 150px;
+  background-color: rgb(233, 233, 233);
+  border: 1px solid lightgray;
+  box-sizing: border-box;
+}
+
+.inquiry_a {
+  margin-bottom: 20px;
+  border: 1px solid lightgray;
+  border-top: none !important;
+  outline: none;
+  resize: none;
+  box-sizing: border-box;
+  width: 80%;
+  padding: 20px;
+  background-color: white;
+  height: 100px !important;
+}
+
+.inquiry_btn {
+  background-color: #05153b;
+  color: white;
+  width: 200px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  cursor: pointer;
+}

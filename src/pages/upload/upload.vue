@@ -28,6 +28,7 @@ const getCategory = async () => {
 
   try {
     data = await AxiosInstance.get('/api/product-service/products/types')
+    if (data === null) return
     data.data.types.map((item: { productTypeId: number; type: string }) => {
       console.log('ITEM : ', item)
       options.value.push({
@@ -82,6 +83,7 @@ const thumbnailUpload = async (event: any) => {
         formData,
         axiosConfig
       )
+      if (data === null) return
       thumbnail.value = data.data.imageId
 
       // FileReader 객체 : 웹 애플리케이션이 데이터를 읽고, 저장하게 해줌
@@ -136,6 +138,7 @@ const upload = async () => {
     }
 
     data = await AxiosInstance.post('/api/product-service/products', param)
+    if (data === null) return
 
     itemName.value = ''
     itemDescription.value = ''
@@ -192,6 +195,7 @@ onMounted(() => {
             formData,
             axiosConfig
           )
+          if (data === null) return
           callback(`/api/product-service/products/images/${data.data.imageId}`)
           //callback()
         } catch (err) {

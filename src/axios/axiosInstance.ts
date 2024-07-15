@@ -1,4 +1,6 @@
 // axios 모듈을 가져옵니다.
+import router from '@/router'
+import { warning } from '@/utils/vueAlert'
 import axios from 'axios'
 
 const AxiosInstance = axios.create({
@@ -36,6 +38,16 @@ AxiosInstance.interceptors.response.use(
     return res
   },
   (err) => {
+    if (err.response.data.code === 'JWT_EXPIRED') {
+      warning('로그아웃 되었습니다.')
+      warning('로그인을 다시 시도해주세요.')
+      localStorage.removeItem('memberToken')
+      router.push('/login')
+      return null
+    } else if (err.response.data.message === 'No authorization header') {
+      warning('해당 작업은 로그인이 필요합니다 🥹')
+      return null
+    }
     return Promise.reject(err)
   }
 )

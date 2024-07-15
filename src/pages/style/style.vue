@@ -8,6 +8,7 @@ const addInput = ref('')
 const getStyleList = async () => {
   try {
     let data = await AxiosInstance.get('/api/product-service/products/types')
+    if (data === null) return
     console.log(data.data)
     styleList.value = data.data.types
   } catch (err: any) {
