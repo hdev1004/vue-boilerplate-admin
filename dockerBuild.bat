@@ -12,3 +12,6 @@ echo Building the new image named %IMAGE_NAME%...
 docker build -t %IMAGE_NAME% .
 
 docker run -d --name %CONTAINER_NAME% -p 8085:8085 %IMAGE_NAME%
+
+echo Pushing the image named %IMAGE_NAME% to Docker Hub...
+docker push %IMAGE_NAME%
