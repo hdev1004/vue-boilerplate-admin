@@ -18,16 +18,31 @@ const itemClick = (item: object, index: number) => {
 
 const answerClick = async (index: number, itemId: number) => {
   let data = <HTMLInputElement>document.querySelector('#answer' + index)
+  console.log('data : ', data)
   console.log('ITEM ID : ', itemId)
   try {
     let res = await AxiosInstance.post(`/api/product-service/products/inquires/${itemId}/answers`, {
-      content: data
+      content: data.value
     })
     if (res === null) return
 
     success('문의 답변이 등록되었습니다.')
+    getInquiryList()
   } catch (err: any) {
     error('답변 등록중 오류가 발생했습니다')
+    console.log(err)
+  }
+}
+
+const deleteClick = async (itemId: number) => {
+  try {
+    let res = await AxiosInstance.delete(`/api/product-service/products/inquires/answers/${itemId}`)
+    if (res === null) return
+
+    success('문의 답변이 삭제되었습니다.')
+    getInquiryList()
+  } catch (err: any) {
+    error('답변 삭제 중 오류가 발생했습니다')
     console.log(err)
   }
 }
@@ -102,17 +117,40 @@ getItemList()
 
       <div class="inquiry_table">
         <a-spin :spinning="loading" tip="데이터를 불러오고 있습니다">
+          <div v-if="inquryList.length === 0">
+            <div>등록된 문의가 없습니다</div>
+          </div>
           <div class="inquiry_row" v-for="(item, index) in inquryList" v-bind:key="`item${index}`">
-            <div class="inquiry_nickname"><b>tester</b>님의 문의</div>
+            <div class="inquiry_nickname">
+              <b>{{ item.memberName }}</b
+              >님의 문의
+            </div>
             <div class="inquiry_q">{{ item.content }}</div>
             <textarea
+              :disabled="item.answer"
+              :value="item?.answer?.content"
               :id="`answer${index}`"
               class="inquiry_a"
               placeholder="답변을 작성해주세요"
               spellcheck="false"
             ></textarea>
-            <div class="inquiry_btn" @click="answerClick(index, item.productInquireId)">
-              답변 달기
+            <div class="btn_group">
+              <div
+                v-if="!item.answer"
+                class="inquiry_btn"
+                @click="answerClick(index, item.productInquireId)"
+              >
+                답변 달기
+              </div>
+              <div v-if="item.answer" class="inquiry_disabled_btn">답변 달기</div>
+
+              <div
+                v-if="item.answer"
+                class="inquiry_delete_btn"
+                @click="deleteClick(item.productInquireId)"
+              >
+                삭제
+              </div>
             </div>
           </div>
         </a-spin>

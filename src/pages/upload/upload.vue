@@ -5,7 +5,8 @@ import Editor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
 
 const route = useRoute()
-console.log(route.query)
+const router = useRouter()
+const loading = ref(false)
 
 const options = ref<Array<Object>>([])
 
@@ -16,8 +17,9 @@ const itemPrice = ref(0)
 const quantity = ref(0)
 const itemCategory = ref('')
 const fileUpload = ref()
-const previewImage = ref(null)
-const thumbnail = ref(null)
+const previewImage = ref<any>(null)
+const thumbnail = ref<any>(null)
+const beforeEditImages = ref<Array<number>>([])
 
 const hashTagInput = ref('')
 const prevTagTrigger = ref(false)
@@ -115,6 +117,51 @@ const findUseImageArray = () => {
   )
 }
 
+const modify = async () => {
+  try {
+    let itemId = route.query.item
+    let useImages = findUseImageArray()
+    //전체 이미지.filter("예전 이미지")
+    const notUse = beforeEditImages.value.filter((item) => !useImages.includes(item))
+
+    let data = null
+    let param = {
+      name: itemName.value,
+      description: itemDescription.value,
+      content: itemContents.value,
+      productTypeId: itemCategory.value,
+      productStyles: hashTag.value,
+      unitPrice: itemPrice.value,
+      quantity: quantity.value,
+      contentImageIds: useImages,
+      deleteImageIds: notUse,
+      thumbnailImageId: thumbnail.value
+    }
+
+    let res = await AxiosInstance.put(`/api/product-service/products/${itemId}`, param)
+    if (res === null) return
+    success('제품 수정이 완료되었습니다.')
+  } catch (err: any) {
+    error('수정 중 오류가 발생했습니다.')
+    console.log(err)
+  }
+
+  /*
+{
+    "name": "new",
+    "description": "new-desc",
+    "content": "new content",
+    "productTypeId": "1",
+    "productStyles": ["NEW", "OLD"],
+    "unitPrice": "999",
+    "quantity": "99",
+    "contentImageIds": [6, 7],
+    "deleteImageIds": [1, 2],
+    "thumbnailImageId": 5
+}
+  */
+}
+
 const upload = async () => {
   console.log('Contetns : ', itemContents.value)
 
@@ -136,25 +183,28 @@ const upload = async () => {
     if (!confirm('제품을 등록하시겠습니까?')) {
       return
     }
-
     data = await AxiosInstance.post('/api/product-service/products', param)
     if (data === null) return
 
-    itemName.value = ''
-    itemDescription.value = ''
-    itemContents.value = ''
-    itemCategory.value = ''
-    itemPrice.value = 0
-    quantity.value = 0
-    e.setHTML('')
-    hashTag.value = []
-    thumbnail.value = null
-    previewImage.value = null
+    clearEditing()
     success('등록이 완료되었습니다.')
   } catch (err) {
     console.log(err)
     error('등록중에 오류가 발생했습니다.')
   }
+}
+
+const clearEditing = () => {
+  itemName.value = ''
+  itemDescription.value = ''
+  itemContents.value = ''
+  itemCategory.value = ''
+  itemPrice.value = 0
+  quantity.value = 0
+  e.setHTML('')
+  hashTag.value = []
+  thumbnail.value = null
+  previewImage.value = null
 }
 
 const props = defineProps({
@@ -168,13 +218,79 @@ const emit = defineEmits(['update:modelValue'])
 const editor = ref()
 let e: any = null
 
-onMounted(() => {
+const getItemInfo = async () => {
+  let itemId = route.query.item
+  if (itemId) {
+    let data = await AxiosInstance.get(`/api/product-service/products/${itemId}`)
+    let item = data.data
+    console.log(item)
+    itemName.value = item.name
+    itemDescription.value = item.description
+    itemCategory.value = item.productType.productTypeId
+    itemContents.value = item.content
+    hashTag.value = item.productStyles
+    itemPrice.value = item.unitPrice
+    quantity.value = item.quantity
+
+    thumbnail.value = item.thumbnailImageId
+    previewImage.value = `/api/product-service/products/images/${item.thumbnailImageId}`
+    beforeEditImages.value = findUseImageArray()
+
+    console.log(item.content)
+  }
+}
+
+getItemInfo()
+
+const isEditingCheck = () => {
+  if (
+    itemName.value !== '' ||
+    itemDescription.value !== '' ||
+    itemCategory.value !== '' ||
+    itemPrice.value !== 0 ||
+    quantity.value !== 0 ||
+    hashTag.value.length !== 0 ||
+    thumbnail.value !== null ||
+    previewImage.value !== null
+  ) {
+    return true
+  } else {
+    return false
+  }
+}
+
+router.beforeEach((to, from, next) => {
+  if (route.path === '/upload' && isEditingCheck()) {
+    if (window.confirm('편집중에 있습니다. 이동하시겠습니까?')) {
+      clearEditing()
+      next()
+    }
+  } else {
+    next()
+  }
+})
+
+onMounted(async () => {
+  let itemId = route.query.item
+  let item = ''
+  let data = null
+  let content = null
+  if (itemId) {
+    loading.value = true
+
+    data = await AxiosInstance.get(`/api/product-service/products/${itemId}`)
+    item = data.data.content
+
+    loading.value = false
+  }
+
   getCategory()
   e = new Editor({
     el: editor.value,
     height: '500px',
     initialEditType: 'wysiwyg',
     previewStyle: 'vertical',
+    initialValue: item ? item : '',
     hooks: {
       async addImageBlobHook(blob, callback) {
         let formData = new FormData()
@@ -257,6 +373,8 @@ onMounted(() => {
     </section>
 
     <section class="editor_container">
+      <a-skeleton active v-if="loading" style="background-color: transparent" />
+      <a-skeleton active v-if="loading" style="background-color: transparent" />
       <div ref="editor" />
     </section>
 
@@ -289,7 +407,8 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="save_btn" @click="upload()">등록</section>
+    <section v-if="$route.query.item" class="save_btn" @click="modify()">수정</section>
+    <section v-else class="save_btn" @click="upload()">등록</section>
     <div style="height: 40px; width: 500px">&nbsp;</div>
   </section>
 </template>

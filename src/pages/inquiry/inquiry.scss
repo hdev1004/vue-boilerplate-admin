@@ -129,3 +129,29 @@
   text-align: center;
   cursor: pointer;
 }
+
+.inquiry_disabled_btn {
+  opacity: 0.3;
+  background-color: #05153b;
+  color: white;
+  width: 200px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  cursor: no-drop;
+}
+
+.inquiry_delete_btn {
+  background-color: #fc5b5b;
+  color: white;
+  width: 50px;
+  height: 45px;
+  line-height: 45px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.btn_group {
+  display: flex;
+  gap: 20px;
+}

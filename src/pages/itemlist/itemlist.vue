@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AxiosInstance from '@/axios/axiosInstance'
 import { error, success } from '@/utils/vueAlert'
+const loading = ref(false)
 
 const AllChecked = ref(false)
 const data = ref<Array<any>>([])
@@ -61,11 +62,13 @@ function formatDateString(dateStr: string) {
 }
 
 const getItemList = async () => {
+  loading.value = true
   let res = null
   try {
     res = await AxiosInstance.get('/api/product-service/products/search?page=1&size=10')
     if (res === null) return
     data.value = res.data.contents
+    loading.value = false
     console.log(data.value)
   } catch (err: any) {
     console.log(err)
@@ -84,45 +87,47 @@ getItemList()
       <div class="search">
         <input placeholder="검색" @keypress="search" v-model="searchInput" />
       </div>
-      <div class="item_list">
-        <div class="item_list_header">
-          <div class="check">
-            <a-checkbox
-              :checked="data.length !== 0 && data.length === Object.keys(checked).length"
-              @click="AllCheckboxClick"
-            ></a-checkbox>
-          </div>
-          <div class="image">사진</div>
-          <div>제품 이름</div>
-          <div>제품 설명</div>
-          <div class="upload">등록일</div>
-          <div class="update">수정</div>
-          <div class="delete">삭제</div>
-        </div>
-
-        <div class="item_list_contetns">
-          <div class="item_list_row" v-for="(item, index) in data" v-bind:key="`item${index}`">
+      <a-spin :spinning="loading" style="height: 300px" tip="loading...">
+        <div class="item_list">
+          <div class="item_list_header">
             <div class="check">
               <a-checkbox
-                :checked="checked[item.productId]"
-                @click="checkboxClick(item.productId)"
+                :checked="data.length !== 0 && data.length === Object.keys(checked).length"
+                @click="AllCheckboxClick"
               ></a-checkbox>
             </div>
-            <div class="image">
-              <img :src="`/api/product-service/products/images/${item.thumbnailImageId}`" />
-            </div>
-            <div>{{ item.name }}</div>
-            <div>{{ item.description }}</div>
-            <div class="upload">{{ formatDateString(item.createdAt) }}</div>
-            <div class="update">
-              <img src="@/assets/images/edit.png" />
-            </div>
-            <div class="delete">
-              <img src="@/assets/images/cancel.png" />
+            <div class="image">사진</div>
+            <div>제품 이름</div>
+            <div>제품 설명</div>
+            <div class="upload">등록일</div>
+            <div class="update">수정</div>
+            <div class="delete">삭제</div>
+          </div>
+
+          <div class="item_list_contetns">
+            <div class="item_list_row" v-for="(item, index) in data" v-bind:key="`item${index}`">
+              <div class="check">
+                <a-checkbox
+                  :checked="checked[item.productId]"
+                  @click="checkboxClick(item.productId)"
+                ></a-checkbox>
+              </div>
+              <div class="image">
+                <img :src="`/api/product-service/products/images/${item.thumbnailImageId}`" />
+              </div>
+              <div>{{ item.name }}</div>
+              <div>{{ item.description }}</div>
+              <div class="upload">{{ formatDateString(item.createdAt) }}</div>
+              <div class="update" @click="$router.push(`/upload?item=${item.productId}`)">
+                <img src="@/assets/images/edit.png" />
+              </div>
+              <div class="delete">
+                <img src="@/assets/images/cancel.png" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </a-spin>
     </section>
   </section>
 </template>
