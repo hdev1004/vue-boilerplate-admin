@@ -11,14 +11,31 @@ const checked = ref<{
   [key: string]: boolean
 }>({})
 
+const deleteClick = async (itemId: number) => {
+  let res = null
+  try {
+    if (window.confirm('제품을 삭제하시겠습니까?')) {
+      res = await AxiosInstance.delete(`/api/product-service/products/${itemId}`)
+      if (res === null) return
+      success('제품이 삭제되었습니다.')
+      getItemList()
+    }
+  } catch (err: any) {
+    console.log(err)
+    error('데이터를 불러오는 도중 오류가 발생했습니다.')
+  }
+}
+
 const search = async (e: any) => {
   let res = null
   if (e.key === 'Enter') {
     try {
+      loading.value = true
       res = await AxiosInstance.get(
         `/api/product-service/products/search?page=1&size=10&keyword=${searchInput.value}`
       )
       if (res === null) return
+      loading.value = false
       data.value = res.data.contents
       success('검색이 완료되었습니다.')
     } catch (err: any) {
@@ -121,7 +138,7 @@ getItemList()
               <div class="update" @click="$router.push(`/upload?item=${item.productId}`)">
                 <img src="@/assets/images/edit.png" />
               </div>
-              <div class="delete">
+              <div class="delete" @click="deleteClick(item.productId)">
                 <img src="@/assets/images/cancel.png" />
               </div>
             </div>

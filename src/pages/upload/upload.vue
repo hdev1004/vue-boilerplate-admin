@@ -19,6 +19,7 @@ const itemCategory = ref('')
 const fileUpload = ref()
 const previewImage = ref<any>(null)
 const thumbnail = ref<any>(null)
+const beforeThumbnail = ref<any>(null)
 const beforeEditImages = ref<Array<number>>([])
 
 const hashTagInput = ref('')
@@ -123,6 +124,11 @@ const modify = async () => {
     let useImages = findUseImageArray()
     //전체 이미지.filter("예전 이미지")
     const notUse = beforeEditImages.value.filter((item) => !useImages.includes(item))
+    console.log('click before : ', beforeThumbnail.value)
+    if (beforeThumbnail.value !== thumbnail.value) {
+      //새로 등록된 이미지일 경우 deleteImage로 추가
+      notUse.push(beforeThumbnail.value)
+    }
 
     let data = null
     let param = {
@@ -137,6 +143,7 @@ const modify = async () => {
       deleteImageIds: notUse,
       thumbnailImageId: thumbnail.value
     }
+    console.log('param : ', param)
 
     let res = await AxiosInstance.put(`/api/product-service/products/${itemId}`, param)
     if (res === null) return
@@ -223,6 +230,9 @@ const getItemInfo = async () => {
   if (itemId) {
     let data = await AxiosInstance.get(`/api/product-service/products/${itemId}`)
     let item = data.data
+    beforeThumbnail.value = item.thumbnailImageId
+    console.log('BeforeEditImages : ', beforeThumbnail.value)
+
     console.log(item)
     itemName.value = item.name
     itemDescription.value = item.description
