@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const router = useRouter()
 import { warning } from '@/utils/vueAlert'
+import Dashboard from '@/components/Dashboard.vue'
 let now = new Date()
 
 let memberTokenString = localStorage.getItem('memberToken')
@@ -15,9 +16,7 @@ if (!memberToken) {
 </script>
 
 <template>
-  <section>
-    <div></div>
-  </section>
+  <Dashboard />
 </template>
 
 <style lang="scss" scoped>
