@@ -1,127 +1,107 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
+import { Doughnut } from 'vue-chartjs'
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js'
 
+ChartJS.register(ArcElement, Tooltip, Legend, Title)
 const props = defineProps({
   data: Array<Number>
 })
+const data = {
+  labels: ['상품1', '상품2', '상품3', '상품4', '상품5'],
+  datasets: [
+    {
+      backgroundColor: [
+        '#0081a7',
+        '#00afb9',
+        '#fdfcdc',
+        '#fed9b7',
+        '#f07167',
+        '#48cae4',
+        '#90e0ef',
+        '#ade8f4'
+      ],
+      data: [40, 20, 40, 10, 60]
+    }
+  ]
+}
 
-const chartOptions = ref({})
-
-const series = ref([
-  {
-    name: 'series A',
-    data: [1.4, 2, 2.5, 1.5, 2.5, 2.8, 3.8, 4.6]
-  },
-  {
-    name: 'series B',
-    data: [20, 29, 37, 36, 44, 45, 50, 58]
-  }
-])
+const options = {
+  responsive: true,
+  maintainAspectRatio: false
+}
 </script>
 
 <template>
   <div class="dashboard_container">
-    <div class="dashboard_group">
-      <div class="dashboard_card">
-        <div class="dashboard_card_title">신규 회원 가입인원</div>
-        <VueApexCharts width="500" type="line" :options="chartOptions" :series="series" />
-      </div>
+    <div class="dashboard_row">
+      <div class="dashboard_group">
+        <div class="dashboard_title">오늘의 매출</div>
+        <div class="dashboard_sub_title">매출 요약</div>
+        <div class="dashboard_detail">
+          <div class="dashboard_detail_card">
+            <img src="@/assets/images/bar.png" />
+            <div class="dashboard_detail_card_title">11,000원</div>
+            <div>총 매출액</div>
+          </div>
 
-      <div class="dashboard_card">
-        <div class="dashboard_card_title">총 매출금액</div>
-        <VueApexCharts width="500" type="line" :options="chartOptions" :series="series" />
-      </div>
-    </div>
+          <div class="dashboard_detail_card">
+            <img src="@/assets/images/board.png" />
+            <div class="dashboard_detail_card_title">100개</div>
+            <div>판매 수</div>
+          </div>
 
-    <div class="dashboard_group">
-      <div class="dashboard_table">
-        <div class="dashboard_card_title">VIP 회원 리스트</div>
-        <div class="dashboard_card_table">
-          <div class="dashboard_header">
-            <div>아이디</div>
-            <div>결제금액</div>
-          </div>
-          <div class="dashboard_row">
-            <div>tester</div>
-            <div>1000원</div>
-          </div>
-          <div class="dashboard_row">
-            <div>tester</div>
-            <div>1000원</div>
-          </div>
-          <div class="dashboard_row">
-            <div>tester</div>
-            <div>1000원</div>
-          </div>
-          <div class="dashboard_row">
-            <div>tester</div>
-            <div>1000원</div>
-          </div>
-          <div class="dashboard_row">
-            <div>tester</div>
-            <div>1000원</div>
-          </div>
-          <div class="dashboard_row">
-            <div>tester</div>
-            <div>1000원</div>
+          <div class="dashboard_detail_card">
+            <img src="@/assets/images/users.png" />
+            <div class="dashboard_detail_card_title">11명</div>
+            <div>일일 방문자</div>
           </div>
         </div>
       </div>
 
-      <div class="dashboard_table">
-        <div class="dashboard_card_title">多 매출 상품</div>
-        <div class="dashboard_card_table">
-          <div class="dashboard_header">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
+      <div class="dashboard_group2">
+        <div class="dashboard_title">매출 목표</div>
+        <div class="dashboard_sub_title">매출 지표</div>
+        <div>
+          <div>
+            <div>주간 매출 목표</div>
+            <a-tooltip title="15000 / 30000">
+              <a-progress :percent="50" status="active" strokeColor="#F2BD6F" />
+            </a-tooltip>
           </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
+
+          <div>
+            <div>일별 매출 목표</div>
+            <a-tooltip title="800 / 4000">
+              <a-progress :percent="20" status="active" strokeColor="#B4D8D8" />
+            </a-tooltip>
           </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
-          <div class="dashboard_row">
-            <div>제품 이름</div>
-            <div>제품 가격</div>
-            <div>판매 수</div>
-          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dashboard_row">
+      <div class="dashboard_group">
+        <div class="dashboard_title">회원 순위</div>
+        <div class="dashboard_sub_title">회원별 순위</div>
+        <div class="dashboard_table_head">
+          <div>#</div>
+          <div>회원 아이디</div>
+          <div>결제 금액</div>
+        </div>
+
+        <div class="dashboard_table_contents" v-for="item in [1, 2, 3, 4, 5]">
+          <div>#</div>
+          <div>tester</div>
+          <div>100000</div>
+        </div>
+      </div>
+      <div class="dashboard_group2">
+        <div class="dashboard_title">상품 지표</div>
+        <div class="dashboard_sub_title">Best 상품 점유율</div>
+        <div class="dashboard_doughnut">
+          <Doughnut :data="data" :options="options" />
         </div>
       </div>
     </div>

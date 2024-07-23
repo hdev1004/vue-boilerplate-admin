@@ -34,5 +34,10 @@ export default [
     path: '/banner',
     name: 'banner',
     component: () => import('@/pages/banner/banner.vue')
+  },
+  {
+    path: '/coupon',
+    name: 'coupon',
+    component: () => import('@/pages/coupon/coupon.vue')
   }
 ]
