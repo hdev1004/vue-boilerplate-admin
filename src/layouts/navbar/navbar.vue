@@ -64,12 +64,6 @@ const homeClick = () => {
         문의 관리
       </div>
       <div
-        :class="`navbar_menu ${menu === '사용자관리' ? 'navbar_menu_active' : ''}`"
-        @click="menuClick('사용자관리')"
-      >
-        사용자 관리
-      </div>
-      <div
         :class="`navbar_menu ${menu === '쿠폰관리' ? 'navbar_menu_active' : ''}`"
         @click="menuClick('쿠폰관리')"
       >
