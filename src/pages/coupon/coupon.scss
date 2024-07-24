@@ -14,7 +14,6 @@
   padding-right: 50px;
 }
 .coupon_right {
-  margin-top: -100px;
   padding-left: 50px;
   padding-right: 50px;
 }
@@ -34,12 +33,41 @@
 
 .coupon_upload {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  gap: 20px;
+  flex-direction: row;
+}
+
+.input_sales {
+  display: flex;
+  margin-top: 20px;
   align-items: center;
+}
+
+.item_select_container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 25px;
+
+  .item_select_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 40px;
+    margin-left: auto;
+    cursor: pointer;
+    margin-right: auto;
+    font-weight: 500;
+    background-color: #05153b;
+    color: white;
+  }
 }
 
 .image_upload {
   width: 200px;
+  min-width: 200px;
+  min-height: 200px;
   height: 200px;
   display: flex;
   justify-content: center;
@@ -75,15 +103,14 @@
 }
 
 .input_upload {
-  width: 400px;
-  height: 400px;
-  margin-top: 50px;
+  width: 100%;
 
   .radio_group {
     display: flex;
     justify-content: center;
     margin-top: 15px;
     margin-bottom: 15px;
+    width: 200px;
   }
   input {
     height: 40px;
@@ -105,6 +132,7 @@
   margin-right: auto;
   width: 200px;
   height: 40px;
+  min-height: 40px;
   background-color: #05153b;
   color: white;
   display: flex;
@@ -174,7 +202,6 @@
 
 .title_sub_logo {
   color: #05153b;
-  margin-top: -40px;
   margin-bottom: 40px;
   font-weight: 500;
 }
@@ -183,4 +210,147 @@
   width: 100% !important;
   object-fit: cover;
   height: 100% !important;
+}
+
+.coupon_item_select_container_false {
+  z-index: -100 !important;
+  opacity: 0 !important;
+}
+
+.coupon_item_select_container {
+  transition: 0.3s;
+  opacity: 1;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .coupon_item_select_background {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  .coupon_item_select_modal {
+    position: relative;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 90%;
+    min-width: 600px;
+    border-radius: 5px;
+
+    z-index: 1100;
+    height: 500px;
+    background-color: white;
+  }
+}
+
+.coupon_item_select_title {
+  margin-top: -30px;
+  margin-left: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.coupon_item_select_items {
+  margin-top: 20px;
+  height: calc(100% - 100px);
+  overflow: auto;
+}
+
+.coupon_item_select_search {
+  input {
+    height: 40px;
+    line-height: 40px;
+    box-sizing: border-box;
+    outline: none;
+    border-radius: 5px;
+    padding-left: 15px;
+    width: 200px;
+    border: 1px solid lightgray;
+    transition: 0.3s;
+
+    &:focus {
+      border: 1px solid black;
+    }
+  }
+}
+
+.coupon_item_select_row {
+  margin-top: 30px;
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.coupon_item_select_header {
+  border-bottom: 1px solid lightgray;
+  display: flex;
+  height: 40px;
+  line-height: 40px;
+  font-weight: bold;
+  text-align: center;
+
+  div {
+    flex: 1;
+  }
+}
+
+.coupon_item_select_item {
+  display: flex;
+  height: 100px;
+  border-bottom: 1px solid lightgray;
+  align-items: center;
+  text-align: center;
+
+  div {
+    flex: 1;
+  }
+}
+
+.coupon_item_select_item_name {
+  text-align: left;
+}
+
+.coupon_item_check {
+  img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+}
+
+.coupon_item_select_close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+
+  img {
+    width: 20px;
+    cursor: pointer;
+    height: 20px;
+  }
+}
+
+.coupon_item_select_thumbnail {
+  height: 100px;
+  img {
+    height: 100px;
+    width: 80px;
+    object-fit: cover;
+  }
+}
+
+.item_select_name {
+  margin-top: 20px;
+  font-weight: bold;
 }
