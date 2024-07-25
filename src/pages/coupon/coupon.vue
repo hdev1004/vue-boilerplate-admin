@@ -74,7 +74,7 @@ const onFileChange = (event: any) => {
 
 //모달에서 아이템 셀렉트
 const itemSelect = (item: any) => {
-  success('아이템 선택 완료 : ' + item.productId)
+  success('상품 선택 완료')
   selectItem.value = item
   isItemSelect.value = false
 }
@@ -130,6 +130,8 @@ const addCoupon = async () => {
     productId.value = null
     selectItem.value = null
     inputType.value = 'all'
+
+    getCouponList()
   } catch (err: any) {
     console.log(err)
     error('쿠폰 등록 중 오류가 발생했습니다.')
@@ -214,7 +216,7 @@ const addCoupon = async () => {
               <img :src="`/api/order-service/coupon/images/${item.couponImage.couponImageId}`" />
             </div>
             <div class="coupon_description">{{ item.name }}</div>
-            <div>{{ discount.toLocaleString() }}</div>
+            <div>{{ item.discount.toLocaleString() }}</div>
             <div class="coupon_delete">
               <img src="@/assets/images/cancel.png" />
             </div>

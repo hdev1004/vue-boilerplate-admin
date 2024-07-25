@@ -3,7 +3,7 @@ import AxiosInstance from '@/axios/axiosInstance'
 import { error, success } from '@/utils/vueAlert'
 
 const styleList = ref<Array<any>>([])
-const addInput = ref('')
+const addInput = ref('카테고리 추가 및 변경은 관리자에게 문의 바랍니다.')
 
 const getStyleList = async () => {
   try {
@@ -45,25 +45,18 @@ getStyleList()
     </section>
 
     <section class="style_input">
-      <input
-        placeholder="저장할 카테고리를 입력하세요 (Enter)"
-        @keypress="addStyle"
-        v-model="addInput"
-      />
+      <input v-model="addInput" disabled />
+      <div>Email : h.dev@kakao.com</div>
+      <div>P.H : 010-2202-4671</div>
     </section>
 
     <section>
       <div class="list_row" v-for="(style, index) in styleList" v-bind:key="`item${index}`">
-        <input :value="style.type" />
-        <div class="item_close" @click="removeStyle(index)">
-          <img src="@/assets/images/closeWhite.png" />
-        </div>
+        <input :value="style.type" disabled />
       </div>
     </section>
 
-    <section>
-      <div class="save_btn" @click="saveClick">저장</div>
-    </section>
+    <section></section>
   </section>
 </template>
 
