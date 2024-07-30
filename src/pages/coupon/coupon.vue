@@ -38,7 +38,7 @@ const getItemList = async (keyword: String) => {
 
 const getCouponList = async () => {
   try {
-    let data = await AxiosInstance.get('/api/order-service/coupon')
+    let data = await AxiosInstance.get('/api/order-service/coupon?disabled=false')
     if (data === null) return
     couponList.value = data.data.coupons
 
@@ -102,10 +102,15 @@ const addCoupon = async () => {
       error('할인율을 0이상 입력해주세요.')
       return
     }
-    if (inputType.value === 'item' && productId.value === null) {
+    if (couponType.value === 'item' && selectItem.value === null) {
       error('특정 상품을 선택해주세요.')
       return
     }
+    if (inputType.value === 'percent' && discount.value > 100) {
+      error('퍼센트의 경우 100이하로 작성해주세요.')
+      return
+    }
+
     console.log('IMAGE : ', imageFile.value)
 
     let param: any = {
@@ -115,8 +120,16 @@ const addCoupon = async () => {
       discount: discount.value
     }
 
-    if (inputType.value === 'item') {
-      param['productId'] = productId.value
+    if (couponType.value === 'item') {
+      alert('특정 아이템 ')
+      console.log(selectItem.value)
+      param['productId'] = selectItem.value.productId
+    }
+
+    if (inputType.value === 'price') {
+      param['isPercent'] = false
+    } else {
+      param['isPercent'] = true
     }
 
     let data = await AxiosInstance.post('/api/order-service/coupon', param, axiosConfig)
@@ -129,7 +142,8 @@ const addCoupon = async () => {
     discount.value = 0
     productId.value = null
     selectItem.value = null
-    inputType.value = 'all'
+    inputType.value = 'price'
+    couponType.value = 'all'
 
     getCouponList()
   } catch (err: any) {
