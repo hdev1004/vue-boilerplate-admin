@@ -230,7 +230,7 @@ const addCoupon = async () => {
               <img :src="`/api/order-service/coupon/images/${item.couponImage.couponImageId}`" />
             </div>
             <div class="coupon_description">{{ item.name }}</div>
-            <div>{{ item.discount.toLocaleString() }}</div>
+            <div>{{ item.discount.toLocaleString() }}{{ item.isPercent ? '%' : '원' }}</div>
             <div class="coupon_delete">
               <img src="@/assets/images/cancel.png" />
             </div>
