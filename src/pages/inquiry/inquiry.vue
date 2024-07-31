@@ -7,6 +7,7 @@ const cilckItem = ref<any>({})
 const inquryList = ref<Array<any>>([])
 const loading = ref(false)
 const leftLoading = ref(false)
+const current = ref(1)
 
 const itemClick = (item: object, index: number) => {
   clickItemIndex.value = index
@@ -14,6 +15,24 @@ const itemClick = (item: object, index: number) => {
   console.log(cilckItem.value)
 
   getInquiryList()
+}
+
+const changePage = async (e: any) => {
+  leftLoading.value = true
+  console.log(current.value)
+  let res = null
+  try {
+    res = await AxiosInstance.get(
+      `/api/product-service/products/search?page=${current.value}&size=5`
+    )
+    if (res === null) return
+    data.value = res.data.contents
+    leftLoading.value = false
+    console.log(data.value)
+  } catch (err: any) {
+    console.log(err)
+    error('데이터를 불러오는 중 오류가 발생했습니다.')
+  }
 }
 
 const answerClick = async (index: number, itemId: number) => {
@@ -67,7 +86,7 @@ const getInquiryList = async () => {
 const getItemList = async () => {
   let res = null
   try {
-    res = await AxiosInstance.get('/api/product-service/products/search?page=1&size=10')
+    res = await AxiosInstance.get('/api/product-service/products/search?page=1&size=5')
     if (res === null) return
     data.value = res.data.contents
     console.log(data.value)
@@ -82,34 +101,44 @@ getItemList()
 
 <template>
   <section class="inquiry_container">
-    <div>
-      <section class="title_container">
-        <div class="title_logo">제품 목록</div>
-      </section>
+    <a-spin :spinning="leftLoading">
+      <div class="item_big_list">
+        <section class="title_container">
+          <div class="title_logo">제품 목록</div>
+        </section>
 
-      <div class="item_list">
-        <div class="item_list_header">
-          <div class="image">사진</div>
-          <div>제품 이름</div>
-          <div>제품 설명</div>
-        </div>
-
-        <div
-          :class="`item_list_contents ${
-            clickItemIndex === index ? 'item_list_contents_active' : ''
-          }`"
-          @click="itemClick(item, index)"
-          v-for="(item, index) in data"
-          v-bind:key="`item${index}`"
-        >
-          <div class="image">
-            <img :src="`/api/product-service/products/images/${item.thumbnailImageId}`" />
+        <div class="item_list">
+          <div class="item_list_header">
+            <div class="image">사진</div>
+            <div>제품 이름</div>
+            <div>제품 설명</div>
           </div>
-          <div>{{ item.name }}</div>
-          <div>{{ item.description }}</div>
+
+          <div
+            :class="`item_list_contents ${
+              clickItemIndex === index ? 'item_list_contents_active' : ''
+            }`"
+            @click="itemClick(item, index)"
+            v-for="(item, index) in data"
+            v-bind:key="`item${index}`"
+          >
+            <div class="image">
+              <img :src="`/api/product-service/products/images/${item.thumbnailImageId}`" />
+            </div>
+            <div>{{ item.name }}</div>
+            <div>{{ item.description }}</div>
+          </div>
+
+          <a-pagination
+            @change="changePage"
+            v-model:current="current"
+            :total="10"
+            :defaultPageSize="1"
+            class="pagination"
+          />
         </div>
       </div>
-    </div>
+    </a-spin>
     <div class="inquiry_list">
       <section class="title_container">
         <div class="title_logo">문의 목록</div>

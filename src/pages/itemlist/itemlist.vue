@@ -6,10 +6,39 @@ const loading = ref(false)
 const AllChecked = ref(false)
 const data = ref<Array<any>>([])
 const searchInput = ref('')
+const router = useRouter()
+const route = useRoute()
 
 const checked = ref<{
   [key: string]: boolean
 }>({})
+const current = ref<any>(1)
+const prevKeyword = ref<any>('')
+if (route.query.page) {
+  current.value = parseInt(route.query.page)
+}
+if (route.query.keyword) {
+  prevKeyword.value = route.query.keyword
+}
+
+const changePage = async () => {
+  loading.value = true
+  let res = null
+  try {
+    res = await AxiosInstance.get(
+      `/api/product-service/products/search?page=${current.value}&size=5`
+    )
+    if (res === null) return
+    data.value = res.data.contents
+    loading.value = false
+    router.push(`/itemlist?page=${current.value}`)
+
+    console.log(data.value)
+  } catch (err: any) {
+    console.log(err)
+    error('데이터를 불러오는 중 오류가 발생했습니다.')
+  }
+}
 
 const deleteClick = async (itemId: number) => {
   let res = null
@@ -30,13 +59,15 @@ const search = async (e: any) => {
   let res = null
   if (e.key === 'Enter') {
     try {
+      current.value = 1
       loading.value = true
       res = await AxiosInstance.get(
-        `/api/product-service/products/search?page=1&size=10&keyword=${searchInput.value}`
+        `/api/product-service/products/search?page=${current.value}&size=5&keyword=${searchInput.value}`
       )
       if (res === null) return
       loading.value = false
       data.value = res.data.contents
+      router.push(`/itemlist?page=${current.value}&keyword=${searchInput.value}`)
       success('검색이 완료되었습니다.')
     } catch (err: any) {
       error('제품 검색도중 오류가 발생했습니다.')
@@ -82,7 +113,15 @@ const getItemList = async () => {
   loading.value = true
   let res = null
   try {
-    res = await AxiosInstance.get('/api/product-service/products/search?page=1&size=10')
+    if (prevKeyword.value) {
+      res = await AxiosInstance.get(
+        `/api/product-service/products/search?page=${current.value}&size=5&keyword=${prevKeyword.value}`
+      )
+    } else {
+      res = await AxiosInstance.get(
+        `/api/product-service/products/search?page=${current.value}&size=5`
+      )
+    }
     if (res === null) return
     data.value = res.data.contents
     loading.value = false
@@ -143,6 +182,14 @@ getItemList()
               </div>
             </div>
           </div>
+
+          <a-pagination
+            @change="changePage"
+            v-model:current="current"
+            :total="10"
+            :defaultPageSize="1"
+            class="pagination"
+          />
         </div>
       </a-spin>
     </section>

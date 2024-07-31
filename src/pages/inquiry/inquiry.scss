@@ -79,6 +79,17 @@
   }
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.item_big_list {
+  height: 100vh;
+  overflow: auto;
+}
+
 .inquiry_list {
   height: 100vh;
   overflow: auto;
