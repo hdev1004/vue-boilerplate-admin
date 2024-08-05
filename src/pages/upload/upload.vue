@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import AxiosInstance from '@/axios/axiosInstance'
 import { error, success, warning } from '@/utils/vueAlert'
-import Editor from '@toast-ui/editor'
-import '@toast-ui/editor/dist/toastui-editor.css'
 
 const route = useRoute()
 const router = useRouter()
@@ -295,14 +293,14 @@ onMounted(async () => {
   }
 
   getCategory()
-  e = new Editor({
+  e = new window.toastui.Editor({
     el: editor.value,
     height: '500px',
     initialEditType: 'wysiwyg',
     previewStyle: 'vertical',
     initialValue: item ? item : '',
     hooks: {
-      async addImageBlobHook(blob, callback) {
+      async addImageBlobHook(blob: any, callback: any) {
         let formData = new FormData()
 
         let axiosConfig = {
