@@ -15,7 +15,8 @@ const checked = ref<{
 const current = ref<any>(1)
 const prevKeyword = ref<any>('')
 if (route.query.page) {
-  current.value = parseInt(route.query.page)
+  let data: any = route.query.page
+  current.value = parseInt(data)
 }
 if (route.query.keyword) {
   prevKeyword.value = route.query.keyword
