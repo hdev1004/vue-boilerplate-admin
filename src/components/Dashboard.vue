@@ -3,29 +3,47 @@ import { ref } from 'vue'
 import VueApexCharts from 'vue3-apexcharts'
 import { Doughnut } from 'vue-chartjs'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js'
+import AxiosInstance from '@/axios/axiosInstance'
+import { error } from '@/utils/vueAlert'
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title)
+const isDataLoad = ref(false)
 const props = defineProps({
   data: Array<Number>
 })
-const data = {
-  labels: ['상품1', '상품2', '상품3', '상품4', '상품5'],
-  datasets: [
-    {
-      backgroundColor: [
-        '#0081a7',
-        '#00afb9',
-        '#fdfcdc',
-        '#fed9b7',
-        '#f07167',
-        '#48cae4',
-        '#90e0ef',
-        '#ade8f4'
-      ],
-      data: [40, 20, 40, 10, 60]
-    }
-  ]
+let data = ref<any>({})
+
+const load = async () => {
+  try {
+    let res = await AxiosInstance.get('/api/product-service/products/orders/top')
+    if (res === null) return
+
+    let values = res.data.products.map((item: any) => item.count)
+    let labels = res.data.products.map((item: any) => item.product.name)
+
+    data.value.labels = labels
+    data.value.datasets = [{}]
+    data.value.datasets[0].data = values
+    data.value.datasets[0].backgroundColor = [
+      '#0081a7',
+      '#00afb9',
+      '#fdfcdc',
+      '#fed9b7',
+      '#f07167',
+      '#48cae4',
+      '#90e0ef',
+      '#ade8f4'
+    ]
+
+    isDataLoad.value = true
+    console.log('DATA : ', data.value)
+  } catch (err: any) {
+    error('오류가 발생했습니다.')
+    console.log(err)
+  }
 }
+
+load()
 
 const options = {
   responsive: true,
@@ -97,11 +115,12 @@ const options = {
           <div>100000</div>
         </div>
       </div>
+
       <div class="dashboard_group2">
         <div class="dashboard_title">상품 지표</div>
         <div class="dashboard_sub_title">Best 상품 점유율</div>
         <div class="dashboard_doughnut">
-          <Doughnut :data="data" :options="options" />
+          <Doughnut :data="data" :options="options" v-if="isDataLoad" />
         </div>
       </div>
     </div>
