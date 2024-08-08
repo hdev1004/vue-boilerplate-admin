@@ -8,6 +8,7 @@ const data = ref<Array<any>>([])
 const searchInput = ref('')
 const router = useRouter()
 const route = useRoute()
+const totalSize = ref(1)
 
 const checked = ref<{
   [key: string]: boolean
@@ -118,10 +119,18 @@ const getItemList = async () => {
       res = await AxiosInstance.get(
         `/api/product-service/products/search?page=${current.value}&size=5&keyword=${prevKeyword.value}`
       )
+
+      let totalData = await AxiosInstance.get(
+        `/api/product-service/products/search/count?&keyword=${prevKeyword.value}`
+      )
+      totalSize.value = Math.ceil(totalData.data.totalCount / 5) //사이즈 만큼 나누기
     } else {
       res = await AxiosInstance.get(
         `/api/product-service/products/search?page=${current.value}&size=5`
       )
+      let totalData = await AxiosInstance.get(`/api/product-service/products/search/count`)
+      totalSize.value = Math.ceil(totalData.data.totalCount / 5) //사이즈 만큼 나누기
+      console.log(totalSize.value)
     }
     if (res === null) return
     data.value = res.data.contents
@@ -187,7 +196,7 @@ getItemList()
           <a-pagination
             @change="changePage"
             v-model:current="current"
-            :total="10"
+            :total="totalSize"
             :defaultPageSize="1"
             class="pagination"
           />

@@ -8,6 +8,7 @@ const inquryList = ref<Array<any>>([])
 const loading = ref(false)
 const leftLoading = ref(false)
 const current = ref(1)
+const totalSize = ref(1)
 
 const itemClick = (item: object, index: number) => {
   clickItemIndex.value = index
@@ -88,6 +89,10 @@ const getItemList = async () => {
   try {
     res = await AxiosInstance.get('/api/product-service/products/search?page=1&size=5')
     if (res === null) return
+
+    let totalData = await AxiosInstance.get(`/api/product-service/products/search/count`)
+    totalSize.value = Math.ceil(totalData.data.totalCount / 5) //사이즈 만큼 나누기
+
     data.value = res.data.contents
     console.log(data.value)
   } catch (err: any) {
@@ -132,7 +137,7 @@ getItemList()
           <a-pagination
             @change="changePage"
             v-model:current="current"
-            :total="10"
+            :total="totalSize"
             :defaultPageSize="1"
             class="pagination"
           />
